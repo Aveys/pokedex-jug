@@ -1,5 +1,8 @@
 package com.aveys.plugins
 
+import com.aveys.entity.User
+import com.aveys.entity.Users
+import com.aveys.utils.dbQuery
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -10,11 +13,21 @@ import io.ktor.server.sessions.cookie
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import io.ktor.util.getDigestFunction
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 data class UserSession(
     val name: String,
     val count: Int,
 ) : Principal
+
+@OptIn(ExperimentalEncodingApi::class)
+fun encodePassword(pass: String): String {
+    val bytes = digestFunction(pass)
+    return Base64.encode(bytes)
+}
+
+val digestFunction = getDigestFunction("SHA-256") { "ktor${it.length}" }
 
 fun Application.configureSecurity() {
     install(Sessions) {
@@ -24,22 +37,16 @@ fun Application.configureSecurity() {
         }
     }
 
-    val digestFunction = getDigestFunction("SHA-256") { "ktor${it.length}" }
-    val hashedUserTable =
-        UserHashedTableAuth(
-            table =
-                mapOf(
-                    "arthur" to digestFunction("jug"),
-                ),
-            digester = digestFunction,
-        )
     authentication {
         session<UserSession>("auth-session") {
             validate { session ->
-                if (hashedUserTable.table.containsKey(session.name)) {
-                    session
-                } else {
-                    null
+                dbQuery {
+                    val user = User.find { Users.username eq session.name }.firstOrNull()
+                    if (user != null) {
+                        session
+                    } else {
+                        null
+                    }
                 }
             }
             challenge {
@@ -51,7 +58,14 @@ fun Application.configureSecurity() {
             userParamName = "username"
             passwordParamName = "password"
             validate { credentials ->
-                hashedUserTable.authenticate(credentials)
+                dbQuery {
+                    val user = User.find { Users.username eq credentials.name }.firstOrNull()
+                    if (user != null && user.password == encodePassword(credentials.password)) {
+                        UserIdPrincipal(credentials.name)
+                    } else {
+                        null
+                    }
+                }
             }
             challenge {
                 call.respondRedirect("/login")
