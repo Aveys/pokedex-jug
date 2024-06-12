@@ -10,4 +10,6 @@ fun Application.module() {
     configureTemplating()
     configureMonitoring()
     configureRouting()
+    configureKoin()
+    configureSerialization()
 }

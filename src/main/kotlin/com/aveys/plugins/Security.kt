@@ -4,39 +4,66 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.sessions.SessionStorageMemory
+import io.ktor.server.sessions.Sessions
+import io.ktor.server.sessions.cookie
+import io.ktor.server.sessions.sessions
+import io.ktor.server.sessions.set
+import io.ktor.util.getDigestFunction
+
+data class UserSession(
+    val name: String,
+    val count: Int,
+) : Principal
 
 fun Application.configureSecurity() {
+    install(Sessions) {
+        cookie<UserSession>("user_session", SessionStorageMemory()) {
+            cookie.path = "/"
+            cookie.maxAgeInSeconds = 3600
+        }
+    }
+
+    val digestFunction = getDigestFunction("SHA-256") { "ktor${it.length}" }
+    val hashedUserTable =
+        UserHashedTableAuth(
+            table =
+                mapOf(
+                    "arthur" to digestFunction("jug"),
+                ),
+            digester = digestFunction,
+        )
     authentication {
-        basic(name = "myauth1") {
-            realm = "Ktor Server"
-            validate { credentials ->
-                if (credentials.name == credentials.password) {
-                    UserIdPrincipal(credentials.name)
+        session<UserSession>("auth-session") {
+            validate { session ->
+                if (hashedUserTable.table.containsKey(session.name)) {
+                    session
                 } else {
                     null
                 }
             }
+            challenge {
+                call.respondRedirect("/login")
+            }
         }
 
-        form(name = "myauth2") {
-            userParamName = "user"
+        form(name = "auth-form") {
+            userParamName = "username"
             passwordParamName = "password"
+            validate { credentials ->
+                hashedUserTable.authenticate(credentials)
+            }
             challenge {
-                //
+                call.respondRedirect("/login")
             }
         }
     }
     routing {
-        authenticate("myauth1") {
-            get("/protected/route/basic") {
+        authenticate("auth-form") {
+            post("/login") {
                 val principal = call.principal<UserIdPrincipal>()!!
-                call.respondText("Hello ${principal.name}")
-            }
-        }
-        authenticate("myauth2") {
-            get("/protected/route/form") {
-                val principal = call.principal<UserIdPrincipal>()!!
-                call.respondText("Hello ${principal.name}")
+                call.sessions.set(UserSession(principal.name, 1))
+                call.respondRedirect("/")
             }
         }
     }

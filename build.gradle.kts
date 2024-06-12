@@ -33,6 +33,10 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-cio-jvm")
     implementation("io.ktor:ktor-server-config-yaml")
+    implementation("io.ktor:ktor-client-core")
+    implementation("io.ktor:ktor-client-cio")
+    implementation("io.ktor:ktor-client-content-negotiation")
+    implementation("io.ktor:ktor-serialization-kotlinx-json")
     implementation("io.insert-koin:koin-ktor:3.5.6")
     implementation("io.insert-koin:koin-logger-slf4j:3.5.6")
     implementation("org.jetbrains.exposed:exposed-core:0.51.1")
@@ -41,4 +45,5 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
+    testImplementation("io.ktor:ktor-server-test-host-jvm:2.3.11")
 }
