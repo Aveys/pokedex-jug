@@ -1,6 +1,6 @@
-package com.aveys.services
+package com.aveys.features.pokemons.domain
 
-import com.aveys.dto.Pokemon
+import com.aveys.features.pokemons.domain.dto.PokemonAPI
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -26,13 +26,13 @@ class PokeApiService {
             }
         }
 
-    suspend fun getRandomPokemon(): Pokemon {
+    suspend fun getRandomPokemon(): PokemonAPI {
         val id = Random.nextInt(1, 1302)
         return getPokemon(id)
     }
 
-    suspend fun getPokemon(id: Int): Pokemon {
-        val pokemon = client.get("pokemon/$id").body<Pokemon>()
+    suspend fun getPokemon(id: Int): PokemonAPI {
+        val pokemon = client.get("pokemon/$id").body<PokemonAPI>()
         return pokemon
     }
 }

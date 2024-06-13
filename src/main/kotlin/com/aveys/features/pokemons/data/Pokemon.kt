@@ -1,6 +1,6 @@
-package com.aveys.entity
+package com.aveys.features.pokemons.data
 
-import com.aveys.dto.PokemonDTO
+import com.aveys.features.pokemons.domain.dto.PokemonDTO
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID

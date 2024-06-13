@@ -1,9 +1,10 @@
 package com.aveys.services
 
-import com.aveys.dto.PokemonDTO
-import com.aveys.entity.Pokedex
-import com.aveys.entity.Pokedexs
-import com.aveys.exceptions.UserNotFound
+import com.aveys.features.pokedexs.data.Pokedex
+import com.aveys.features.pokedexs.data.Pokedexs
+import com.aveys.features.pokemons.domain.dto.PokemonDTO
+import com.aveys.features.users.domain.UserService
+import com.aveys.features.users.domain.exceptions.UserNotFound
 import com.aveys.utils.dbQuery
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

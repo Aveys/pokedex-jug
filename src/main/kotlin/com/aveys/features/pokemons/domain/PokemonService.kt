@@ -1,6 +1,7 @@
 package com.aveys.services
 
-import com.aveys.entity.Pokemon
+import com.aveys.features.pokemons.data.Pokemon
+import com.aveys.features.pokemons.domain.PokeApiService
 import com.aveys.utils.dbQuery
 
 class PokemonService(

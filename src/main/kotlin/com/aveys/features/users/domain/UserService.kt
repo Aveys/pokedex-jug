@@ -1,9 +1,9 @@
-package com.aveys.services
+package com.aveys.features.users.domain
 
-import com.aveys.dto.UserSignInDTO
-import com.aveys.entity.Pokedex
-import com.aveys.entity.User
-import com.aveys.entity.Users
+import com.aveys.features.pokedexs.data.Pokedex
+import com.aveys.features.users.data.User
+import com.aveys.features.users.data.Users
+import com.aveys.features.users.domain.dto.UserSignInDTO
 import com.aveys.plugins.encodePassword
 import com.aveys.utils.dbQuery
 import java.time.Instant

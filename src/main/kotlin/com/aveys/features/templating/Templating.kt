@@ -1,4 +1,4 @@
-package com.aveys.plugins
+package com.aveys.features.templating
 
 import com.aveys.services.PokedexService
 import com.aveys.utils.user

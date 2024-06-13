@@ -1,4 +1,4 @@
-package com.aveys.dto
+package com.aveys.features.users.domain.dto
 
 data class UserSignInDTO(
     val username: String,

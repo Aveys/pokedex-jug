@@ -1,6 +1,6 @@
 package com.aveys.utils
 
-import com.aveys.exceptions.UserNotConnected
+import com.aveys.features.users.domain.exceptions.UserNotConnected
 import com.aveys.plugins.UserSession
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.sessions.get

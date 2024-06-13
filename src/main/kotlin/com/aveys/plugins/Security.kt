@@ -1,7 +1,7 @@
 package com.aveys.plugins
 
-import com.aveys.entity.User
-import com.aveys.entity.Users
+import com.aveys.features.users.data.User
+import com.aveys.features.users.data.Users
 import com.aveys.utils.dbQuery
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -10,7 +10,6 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.SessionStorageMemory
 import io.ktor.server.sessions.Sessions
 import io.ktor.server.sessions.cookie
-import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import io.ktor.util.getDigestFunction
 import kotlin.io.encoding.Base64
@@ -69,15 +68,6 @@ fun Application.configureSecurity() {
             }
             challenge {
                 call.respondRedirect("/login")
-            }
-        }
-    }
-    routing {
-        authenticate("auth-form") {
-            post("/login") {
-                val principal = call.principal<UserIdPrincipal>()!!
-                call.sessions.set(UserSession(principal.name, 1))
-                call.respondRedirect("/")
             }
         }
     }

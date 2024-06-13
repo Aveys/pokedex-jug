@@ -1,4 +1,4 @@
-package com.aveys.dto
+package com.aveys.features.pokemons.domain.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -10,7 +10,7 @@ data class PokemonCries(
 )
 
 @Serializable
-data class Pokemon(
+data class PokemonAPI(
     val id: Int,
     val name: String,
     val height: Int,

@@ -1,4 +1,4 @@
-package com.aveys.dto
+package com.aveys.features.pokemons.domain.dto
 
 import kotlinx.serialization.Serializable
 

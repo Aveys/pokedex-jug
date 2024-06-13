@@ -1,5 +1,8 @@
-package com.aveys.entity
+package com.aveys.features.pokedexs.data
 
+import com.aveys.features.pokemons.data.Pokemon
+import com.aveys.features.users.data.User
+import com.aveys.features.users.data.Users
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID

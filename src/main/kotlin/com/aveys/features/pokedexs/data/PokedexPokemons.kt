@@ -1,5 +1,6 @@
-package com.aveys.entity
+package com.aveys.features.pokedexs.data
 
+import com.aveys.features.pokemons.data.Pokemons
 import org.jetbrains.exposed.sql.Table
 
 object PokedexPokemons : Table() {

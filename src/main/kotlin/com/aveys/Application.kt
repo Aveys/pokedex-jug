@@ -1,11 +1,15 @@
 package com.aveys
 
-import com.aveys.entity.Pokedex
-import com.aveys.entity.PokedexPokemons
-import com.aveys.entity.Pokedexs
-import com.aveys.entity.Pokemons
-import com.aveys.entity.User
-import com.aveys.entity.Users
+import com.aveys.features.pokedexs.data.Pokedex
+import com.aveys.features.pokedexs.data.PokedexPokemons
+import com.aveys.features.pokedexs.data.Pokedexs
+import com.aveys.features.pokedexs.routes.pokedexRoutes
+import com.aveys.features.pokemons.data.Pokemons
+import com.aveys.features.pokemons.routes.pokemonRoutes
+import com.aveys.features.templating.configureTemplating
+import com.aveys.features.users.data.User
+import com.aveys.features.users.data.Users
+import com.aveys.features.users.routes.userRoutes
 import com.aveys.plugins.*
 import io.ktor.server.application.Application
 import org.jetbrains.exposed.sql.Database
@@ -45,4 +49,7 @@ fun Application.module() {
     configureRouting()
     configureKoin()
     configureSerialization()
+    userRoutes()
+    pokemonRoutes()
+    pokedexRoutes()
 }

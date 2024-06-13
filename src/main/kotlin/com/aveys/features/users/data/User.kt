@@ -1,4 +1,4 @@
-package com.aveys.entity
+package com.aveys.features.users.data
 
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
