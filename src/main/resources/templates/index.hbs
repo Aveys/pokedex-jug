@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <title>Pokedex Jug</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+  <meta name="theme-color" content="#7952b3">
+</head>
+<body>
+
+<main class="body">
+  <h2>Bienvenue {{user}}</h2>
+  <hr/>
+  <form>
+    <div class="input-group mb-3">
+      <input id="input-pokemon" type="text" class="form-control" placeholder="Add pokemon (id or name)" aria-label="Add pokemon (id or name)" aria-describedby="button-addon2">
+      <button class="btn btn-outline-primary" type="button" id="button-add">Ajouter</button>
+    </div>
+    <div class="table-pokemon">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">nom</th>
+          <th scope="col">sprite</th>
+          <th scope="col">sound</th>
+          <th scope="col">action</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {{#pokedex}}
+          <tr>
+          <th scope="row" id="pkmn-{{id}}">{{id}}</th>
+          <td>{{name}}</td>
+          <td><img src="{{sprite}}" alt="sprite pokemon"/></td>
+          <td><audio controls>
+            <source src="{{cries}}" type="audio/ogg">
+            Your browser does not support the audio element.
+          </audio></td>
+            <td><a class="btn-delete btn btn-lg btn-error" id="btn-delete">🗑️</a></td>
+          </tr>
+        {{/pokedex}}
+        </tbody>
+      </table>
+    </div>
+  </form>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script>
+  async function addPokemon(value) {
+    const response = await fetch(`/pokedex/${value}`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+    const res = await response.json();
+  }
+
+  async function deletePokemon(value) {
+    const response = await fetch(`/pokedex/${value}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+    await response.json();
+
+  }
+
+  document.getElementById("button-add").onclick = async () => {
+    const value = document.getElementById("input-pokemon").value
+    await addPokemon(value)
+  }
+  Array.from(document.getElementsByClassName("btn-delete")).forEach((el) => {
+    const id = el.parentElement.parentElement.children[0].id.split('-')[1]
+    el.onclick = async () => {
+      await deletePokemon(id)
+    }
+  })
+
+</script>
+</body>
+</html>
